@@ -10,7 +10,7 @@ class Scrapper:
     def __init__(self):
         pass
 
-    def scrapeShip(self, ship_name, ship_type="Passenger", city="SEVASTOPOL"):
+    def scrape_ship(self, ship_name, ship_type="Passenger", city="SEVASTOPOL"):
         '''
         Scrape ship data from AIS.
         return: ( speed, course, (lattitude, longitude) )
