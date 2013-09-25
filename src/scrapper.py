@@ -1,22 +1,28 @@
 import urllib2
 from bs4 import BeautifulSoup
 import codecs
+import re
 
 class Scrapper:
     '''
     Scrapper class.
     '''
-    def __init__(self, ais_url = 'http://www.marinetraffic.com/'):
+    def __init__(self):
         pass
 
-    def scrapeShip(self, ship_name, ship_type="Passenger"):
-        #url = "http://www.marinetraffic.com/ais/ru/datasheet.aspx?SHIPNAME={0}&TYPE_SUMMARY={1}&menuid=&datasource=SHIPS_CURRENT&app=&mode=&B1=%D0%9F%D0%BE%D0%B8%D1%81%D0%BA".format(ship_name, ship_type)
-        url = r"http://www.marinetraffic.com/ais/datasheet.aspx?SHIPNAME=NORD&TYPE_SUMMARY=Passenger&menuid=&datasource=SHIPS_CURRENT&app=&mode=&B1=Search"
-        html = urllib2.urlopen(url).read()
-        soup = BeautifulSoup(html)
-        print soup.find("a",class_='data',text="SEVASTOPOL").find_parent("tr")
-        # TODO: parse table row
-
-scrapper = Scrapper()
-
-scrapper.scrapeShip('NORD')
+    def scrapeShip(self, ship_name, ship_type="Passenger", city="SEVASTOPOL"):
+        '''
+        Scrape ship data from AIS.
+        return: ( speed, course, (lattitude, longitude) )
+        '''
+        url = r"http://www.marinetraffic.com/ais/datasheet.aspx?SHIPNAME={0}&TYPE_SUMMARY={1}&menuid=&datasource=SHIPS_CURRENT&app=&mode=&B1=Search".format(ship_name, ship_type)
+        soup = BeautifulSoup(urllib2.urlopen(url).read())
+        data = soup.find("a",class_='data',text=city).find_parent("tr").find_all("td")
+        speed = float(data[3].text)
+        course = float(data[4].text)
+        raw_position = data[7].find("a")["href"]
+        pattern = re.compile(r"centerx=([0-9\.]+)&centery=([0-9\.]+)")
+        m = pattern.search(raw_position)
+        longitude = float(m.group(1))
+        lattitude = float(m.group(2))
+        return speed, course, (lattitude, longitude)
