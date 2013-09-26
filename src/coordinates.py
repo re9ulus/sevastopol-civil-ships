@@ -18,7 +18,6 @@ class Angle:
     self.scd = scd  
   
   def __lt__ (self, point):
-    if (self.scd == 0) and (point.longitude == 0) :
-      return (self.fst < point.latitude)
-    return ((self.fst * point.longitude) < (self.scd * point.latitude))
-	
+    if (self.scd == 0) and (point.scd == 0) :
+      return (self.fst < point.fst)
+    return ((self.fst * point.scd) < (self.scd * point.fst))
