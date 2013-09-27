@@ -14,8 +14,8 @@ class Scrapper:
         Scrape ship data from AIS.
         return: ( speed, course, (lattitude, longitude) )
         '''
+        url = r"http://www.marinetraffic.com/ais/datasheet.aspx?datasource=SHIPS_CURRENT&PORT_ID=883&SHIPNAME={0}".format(ship_name)
         try:
-            url = r"http://www.marinetraffic.com/ais/datasheet.aspx?datasource=SHIPS_CURRENT&PORT_ID=883&SHIPNAME={0}".format(ship_name)
             soup = BeautifulSoup(urllib2.urlopen(url).read())
             data = soup.find("a",class_='data',text=ship_name).find_parent("tr").find_all("td")
             speed = float(data[3].text)
