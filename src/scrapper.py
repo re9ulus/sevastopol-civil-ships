@@ -2,6 +2,8 @@ import urllib2
 from bs4 import BeautifulSoup
 import re
 
+from coordinates import Coordinates
+
 class Scrapper:
     '''
     Scrapper class.
@@ -12,7 +14,7 @@ class Scrapper:
     def scrape_ship(self, ship_name, ship_type="Passenger", city="SEVASTOPOL"):
         '''
         Scrape ship data from AIS.
-        return: ( speed, course, (lattitude, longitude) )
+        return: ( speed, course, (latitude, longitude) )
         '''
         url = r"http://www.marinetraffic.com/ais/datasheet.aspx?SHIPNAME={0}&TYPE_SUMMARY={1}&menuid=&datasource=SHIPS_CURRENT&app=&mode=&B1=Search".format(ship_name, ship_type)
         soup = BeautifulSoup(urllib2.urlopen(url).read())
@@ -23,5 +25,5 @@ class Scrapper:
         pattern = re.compile(r"centerx=([0-9\.]+)&centery=([0-9\.]+)")
         m = pattern.search(raw_position)
         longitude = float(m.group(1))
-        lattitude = float(m.group(2))
-        return speed, course, (lattitude, longitude)
+        latitude = float(m.group(2))
+        return speed, course, Coordinates(latitude, longitude)
