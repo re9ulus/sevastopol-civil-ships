@@ -63,7 +63,7 @@ class Area:
             elif (foo == edge_position.CROSSING) :
                 is_in = not is_in
 
-        print point.latitude, point.longitude
+        #print point.latitude, point.longitude
         return [polygon_position.OUTSIDE, polygon_position.INSIDE] [is_in]
 
     def __edge_type__(self, point, edge):
