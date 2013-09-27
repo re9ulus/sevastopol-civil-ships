@@ -11,21 +11,25 @@ for coord in bay :
 	Bay.append(Coordinates(float(lat), float(lon)))
 
 Field = Area(Bay)
+Field.__start_point__()
 
-
-Cater = Ship("MOLODIZGNIY", Coordinates(0,0), 0)
+caters = ["MOLODIZGNIY", "ADMIRAL LAZAREV", "SATURN", "ADMIRAL ISTOMIN", "V ADMIRAL KLOKACHEV", "NORD"]
+Caters = []
+for c in caters:
+	Caters.append(Ship(c))
 
 Scrap = Scrapper()
 
-v, cors, point = Scrap.scrape_ship(Cater.name)
-
-print point.latitude, point.longitude
-
-Field.__start_point__()
-
-print Field.__das_is_in__(point)
-
-print
+for cater in Caters :
+	res = Scrap.scrape_ship(cater.name)
+	if res == None:
+		print cater.name, "Not found"
+	else:
+		v, cors, point = res
+		print cater.name, "\t---\t", Field.__das_is_in__(point)
+		print point
+		print
+	#print
 #for x in Field.points:
 #	print x.latitude, x.longitude
 
