@@ -24,7 +24,7 @@ class Area:
         self.points = points
         self.zero = points[0]
         
-    def __start_point__ (self) :
+    def start_point (self) :
         '''
         Перегрупировывает точки многоугольника для обхода по часовой стрелки слева снизу
         '''
@@ -37,7 +37,7 @@ class Area:
         self.zero = self.points[zero_id]
         self.points = self.points[zero_id:] + self.points[:zero_id]
 
-    def __das_is_in__(self, point) :
+    def inside (self, point) :
         '''
         Приобразовувает к читабельному виду
         '''
