@@ -14,7 +14,8 @@ class Scrapper:
     def scrape_ship(self, ship_name):
         '''
         Scrape ship data from AIS.
-        return: ( speed, course, (latitude, longitude) )
+        return ( speed, course, (latitude, longitude) )
+        if error occured return None
         '''
         url = r"http://www.marinetraffic.com/ais/datasheet.aspx?datasource=SHIPS_CURRENT&PORT_ID=883&SHIPNAME={0}".format(ship_name)
         try:

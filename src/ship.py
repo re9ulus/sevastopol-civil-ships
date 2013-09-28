@@ -19,6 +19,5 @@ class Ship:
             self.course = data[1]
             self.coordinates = Coordinates(data[2][0], data[2][1])
 
-
     def __str__(self):
         return "name: {0}; speed: {1}; course: {2}; coordinates: {3};".format(self.name, self.speed, self.course, self.coordinates)
