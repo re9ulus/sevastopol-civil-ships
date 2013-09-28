@@ -23,6 +23,7 @@ class Area:
     def __init__(self, points) :
         self.points = points
         self.zero = points[0]
+        self.start_point()
         
     def start_point (self) :
         '''

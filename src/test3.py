@@ -7,14 +7,11 @@ from kmlparser import KmlParser
 
 Kml = KmlParser()
 
+#print "start parse bay"
 City_Nord_bay = Kml.parse("Bay\\City-Nord.kml")
-City_Nord_bay.start_point()
-
 Art_Nord_bay = Kml.parse("Bay\\Art-Nord.kml")
-Art_Nord_bay.start_point()
-
 Art_Rad_bay = Kml.parse("Bay\\Art-Rad.kml")
-Art_Rad_bay.start_point()
+#print "end parse bay"
 
 caters = ["OST", "ORION", "G. OVCHINNIKOV", "ZUYD", "PERSEY", "MOLODIZGNIY", "ADMIRAL LAZAREV", "SATURN", "ADMIRAL ISTOMIN", "V ADMIRAL KLOKACHEV", "NORD"]
 Caters = []
@@ -22,8 +19,7 @@ for c in caters:
 	Caters.append(Ship(c))
 
 
-Scrap = Scrapper()
-
+#Scrap = Scrapper()
 
 City_Nord = []
 Art_Nord = []
@@ -32,12 +28,14 @@ Not_Found = []
 Outsiders = []
 
 for cater in Caters :
-	res = Scrap.scrape_ship(cater.name)
-	if res == None:
+	#res = Scrap.scrape_ship(cater.name)
+	cater.update_from_ais()
+	point = cater.coordinates
+	if point == None:
 		Not_Found.append(cater.name)
 	else:
 		f1 = f2 = f3 = False
-		v, cors, point = res
+		#v, cors, point = res
 		if City_Nord_bay.inside(point) == "INSIDE":
 			City_Nord.append(cater.name)
 			f1 = True

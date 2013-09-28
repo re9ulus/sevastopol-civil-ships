@@ -25,7 +25,6 @@ class KmlParser:
                 polygon.append(Coordinates(latitude, longitude))
                 #print Coordinates(latitude, longitude)
             res = Area(polygon)
-
         except:
             res = None
         finally:

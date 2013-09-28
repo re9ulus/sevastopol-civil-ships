@@ -14,7 +14,7 @@ class Scrapper:
     def scrape_ship(self, ship_name):
         '''
         Scrape ship data from AIS.
-        return: ( speed, course, Coordinates(latitude, longitude) )
+        return: ( speed, course, (latitude, longitude) )
         '''
         search_name = ""
         for word in ship_name.split(" "):
@@ -32,7 +32,7 @@ class Scrapper:
             m = pattern.search(raw_position)
             longitude = float(m.group(1))
             latitude = float(m.group(2))
-            res = ( speed, course, Coordinates(latitude, longitude) )
+            res = ( speed, course, (latitude, longitude) )
         except (AttributeError, urllib2.URLError):
             res = None
         finally:
