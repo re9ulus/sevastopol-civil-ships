@@ -22,7 +22,7 @@ for c in caters:
 #	else:
 #		print cater.name, "Not FOUND"
 
-timer = 15
+timer = 1#5
 for t in range(timer):
 	for cater in Caters :
 		#res = Scrap.scrape_ship(cater.name)
@@ -32,6 +32,8 @@ for t in range(timer):
 			counter = []
 			for route in routes:
 				counter.append(0)
+				if (route.bay.is_inside(cater.coordinates)):
+					counter[-1] += 1				
 				for pos in cater.lastpos :
 					if (route.bay.is_inside(pos)):
 						counter[-1] += 1
@@ -42,7 +44,7 @@ for t in range(timer):
 				cater.route = "Outsider"
 
 	print "I am still work {0} minute remain".format(5 * (timer-t) )
-	time.sleep (5 * 60) #5 min delay
+	#time.sleep (5 * 60) #5 min delay
 
 for cater in Caters:
 	if (cater.ais_status() == "ONLINE") :
