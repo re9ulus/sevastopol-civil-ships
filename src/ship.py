@@ -34,7 +34,6 @@ class Ship:
         else:
             self.status = ship_status.OFLINE
 
-
     def __str__(self):
         return "name: {0}; speed: {1}; course: {2}; coordinates: {3}; route: {4};".format(self.name, self.speed, self.course, self.coordinates, self.route)
 

@@ -14,7 +14,8 @@ class Scrapper:
     def scrape_ship(self, ship_name):
         '''
         Scrape ship data from AIS.
-        return: ( speed, course, (latitude, longitude) )
+        return ( speed, course, (latitude, longitude) )
+        if error occured return None
         '''
         search_name = ""
         for word in ship_name.split(" "):
