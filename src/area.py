@@ -1,19 +1,14 @@
 ﻿from coordinates import Coordinates
+from enum import Enum
 #from coordinates import Angle
-
-def enum(*sequential, **named):
-    enums = dict(zip(sequential, range(len(sequential))), **named)
-    reverse = dict((value, key) for key, value in enums.iteritems())
-    enums['reverse_mapping'] = reverse
-    return type('Enum', (), enums)
 
 # Перечисления положений
 # Внутри, Снаружи, На границе
-polygon_position = enum('INSIDE', 'OUTSIDE', 'BOUNDARY')
+polygon_position = Enum('INSIDE', 'OUTSIDE', 'BOUNDARY')
 # Касается, Пересекает, Не имеет значения
-edge_position = enum('TOUCHING', 'CROSSING', 'INESSENTIAL')
+edge_position = Enum('TOUCHING', 'CROSSING', 'INESSENTIAL')
 # Слева, Справа, Впереди, Сзади, Между, В начале, В конце
-point_position = enum('LEFT',  'RIGHT',  'BEYOND',  'BEHIND', 'BETWEEN', 'ORIGIN', 'DESTINATION')
+point_position = Enum('LEFT',  'RIGHT',  'BEYOND',  'BEHIND', 'BETWEEN', 'ORIGIN', 'DESTINATION')
 
 
 class Area:
@@ -43,6 +38,12 @@ class Area:
         Приобразовувает к читабельному виду
         '''
         return polygon_position.reverse_mapping[self.__point_in_polygon__(point)]
+
+    def is_inside (self, point) :
+        '''
+        Возвращает bool находится ли точка в области
+        '''
+        return polygon_position.INSIDE == self.__point_in_polygon__(point)
 
     def __point_in_polygon__(self, point) :
         '''
