@@ -1,4 +1,6 @@
-﻿class Coordinates:
+﻿from math import sqrt
+
+class Coordinates:
     '''
     Coordinates class.
     '''
@@ -16,7 +18,6 @@
         '''
         Определяет длину вектора заданного координатами
         '''
-        from math import sqrt
         return sqrt(self.latitude*self.latitude + self.longitude*self.longitude)
 
     def __str__(self):
