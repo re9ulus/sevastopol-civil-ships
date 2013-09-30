@@ -10,7 +10,7 @@ Kml = KmlParser()
 
 routes = [Route("City-Nord", Kml.parse("Bay\\City-Nord.kml")), Route("Art-Nord", Kml.parse("Bay\\Art-Nord.kml")), Route("Art-Rad", Kml.parse("Bay\\Art-Rad.kml")) ]
 
-caters = ["OST", "ORION", "G. OVCHINNIKOV", "ZUYD", "PERSEY", "MOLODIZGNIY", "ADMIRAL LAZAREV", "SATURN", "ADMIRAL ISTOMIN", "V ADMIRAL KLOKACHEV", "NORD"]
+caters = ["MERKURIY", "OST", "ORION", "G. OVCHINNIKOV", "ZUYD", "PERSEY", "MOLODIZGNIY", "ADMIRAL LAZAREV", "SATURN", "ADMIRAL ISTOMIN", "V ADMIRAL KLOKACHEV", "NORD"]
 Caters = []
 for c in caters:
 	Caters.append(Ship(c))
@@ -22,7 +22,7 @@ for c in caters:
 #	else:
 #		print cater.name, "Not FOUND"
 
-timer = 1#5
+timer = 5
 for t in range(timer):
 	for cater in Caters :
 		#res = Scrap.scrape_ship(cater.name)
@@ -43,7 +43,7 @@ for t in range(timer):
 			else :
 				cater.route = "Outsider"
 
-	print "I am still work {0} minute remain".format(5 * (timer-t) )
+	#print "I am still work {0} minute remain".format(5 * (timer-t) )
 	#time.sleep (5 * 60) #5 min delay
 
 for cater in Caters:

@@ -39,3 +39,9 @@ class Ship:
 
     def ais_status(self):
         return ship_status.reverse_mapping[self.status]
+
+    def angle (self, point):
+        '''
+        Easy use for Coordinates.angle()
+        '''
+        return self.coordinates.angle(self.course, point)

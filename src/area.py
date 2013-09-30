@@ -27,7 +27,7 @@ class Area:
         # указатель на начальную точку обхода
         zero_id = 0 
         for i in range(len(self.points)) :
-            if (self.points[i].latitude < self.points[zero_id].latitude) or ( (self.points[i].latitude == self.points[zero_id].latitude) and (self.points[i].longitude < self.points[zero_id].longitude) ) :
+            if (self.points[i] < self.points[zero_id]) :
                 zero_id = i
 
         self.zero = self.points[zero_id]
