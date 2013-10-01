@@ -8,7 +8,7 @@ class Coordinates:
         self.latitude = latitude
         self.longitude = longitude
 
-    def __square__ (a, b, c):
+    def square (a, b, c):
         return a.latitude*(b.longitude-c.longitude) + b.latitude*(c.longitude-a.longitude) + c.latitude*(a.longitude-b.longitude)
 
     def __sub__ (self, point):
@@ -40,18 +40,21 @@ class Coordinates:
         '''
         #phi = cours to radian Decart angle
         #Warning Kostul'
-        if (course <= 90):
-            phi = 90 - course
-        else:
-            phi = 450 - course
+        #if (course <= 90):
+        #    phi = 90 - course
+        #else:
+        #    phi = 450 - course
         #print phi, course
-        phi = pi * phi / 180
+        phi = (450 - course) % 360 #grad
+        #print phi
+        phi = pi * phi / 180 #rad
 
         A = Coordinates(cos(phi), sin(phi))
         B = dest - self
         scalar = A * B / ( A.length() * B.length() )
+        #print scalar
 
-        return round( acos(scalar) / pi * 180 )# acos(scalar)#, 
+        return acos(scalar) / pi * 180 #round acos(scalar)#, 
 
 #class Angle:
 #  '''

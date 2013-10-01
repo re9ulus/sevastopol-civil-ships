@@ -1,16 +1,21 @@
-from scrapper import Scrapper
-from ship import Ship
-from area import Area
-from coordinates import Coordinates
-from kmlparser import KmlParser
-from route import Route
+from src.scrapper import Scrapper
+from src.ship import Ship
+from src.area import Area
+from src.coordinates import Coordinates
+from src.kmlparser import KmlParser
+from src.route import Route
 import time
 
 Kml = KmlParser()
 
-routes = [Route("City-Nord", Kml.parse("Bay\\City-Nord.kml")), Route("Art-Nord", Kml.parse("Bay\\Art-Nord.kml")), Route("Art-Rad", Kml.parse("Bay\\Art-Rad.kml")) ]
+#Route(Kml.parse("Bay\\City-Nord.kml"))
+routes = [Route(Kml.parse("Bay\\City-Nord.kml")), Route(Kml.parse("Bay\\Art-Nord.kml")), Route(Kml.parse("Bay\\Art-Rad.kml")) ]
 
-caters = ["MERKURIY", "OST", "ORION", "G. OVCHINNIKOV", "ZUYD", "PERSEY", "MOLODIZGNIY", "ADMIRAL LAZAREV", "SATURN", "ADMIRAL ISTOMIN", "V ADMIRAL KLOKACHEV", "NORD"]
+caters = ["WEST", "URAN", "MERKURIY", "OST",
+ "ORION", "G. OVCHINNIKOV", "ZUYD", "PERSEY",
+ "MOLODIZGNIY", "ADMIRAL LAZAREV", "SATURN",
+ "ADMIRAL ISTOMIN", "V ADMIRAL KLOKACHEV", "NORD"]
+ 
 Caters = []
 for c in caters:
 	Caters.append(Ship(c))
