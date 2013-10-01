@@ -9,7 +9,10 @@ class Scrapper:
     Scrapper class.
     '''
     def __init__(self):
-        pass
+        self.urls = {
+            "one_ship": r"http://www.marinetraffic.com/ais/datasheet.aspx?datasource=SHIPS_CURRENT&PORT_ID=883&SHIPNAME={0}",
+            "all_ships": r"http://www.marinetraffic.com/ais/datasheet.aspx?datasource=SHIPS_CURRENT&PORT_ID=883"
+        }
 
     def scrape_ship(self, ship_name):
         '''
@@ -19,7 +22,7 @@ class Scrapper:
         '''
         res = None
         search_name = self._get_search_name(ship_name)
-        url = r"http://www.marinetraffic.com/ais/datasheet.aspx?datasource=SHIPS_CURRENT&PORT_ID=883&SHIPNAME={0}".format(search_name)
+        url = self.urls["one_ship"].format(search_name)
         try:
             soup = BeautifulSoup(urllib2.urlopen(url).read())
             row = soup.find("a",class_="data",text=ship_name).find_parent("tr").find_all("td")
@@ -37,7 +40,7 @@ class Scrapper:
         if error occured while procssing http connection or html parsing return empty hash.
         if error occured while processing ship, than ship is not included in the result.
         '''
-        url = r"http://www.marinetraffic.com/ais/datasheet.aspx?datasource=SHIPS_CURRENT&PORT_ID=883"
+        url = self.urls["all_ships"]
         data = []
         res = {}
         try:
