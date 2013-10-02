@@ -17,24 +17,68 @@ class Scrapper:
         return ( speed, course, (latitude, longitude) )
         if error occured return None
         '''
-        search_name = ""
-        for word in ship_name.split(" "):
-            search_name += word + "+"
-        search_name = search_name[:-1]
-
+        res = None
+        search_name = self._get_search_name(ship_name)
         url = r"http://www.marinetraffic.com/ais/datasheet.aspx?datasource=SHIPS_CURRENT&PORT_ID=883&SHIPNAME={0}".format(search_name)
         try:
             soup = BeautifulSoup(urllib2.urlopen(url).read())
-            data = soup.find("a",class_='data',text=ship_name).find_parent("tr").find_all("td")
-            speed = float(data[3].text)
-            course = float(data[4].text)
-            raw_position = data[9].find("a")["href"]
+            row = soup.find("a",class_="data",text=ship_name).find_parent("tr").find_all("td")
+        except (AttributeError, urllib2.URLError):
+            row = None
+        if row != None:
+            res = self._get_data(row)
+        return res
+
+    def scrape_all_ships(self, ship_names):
+        # TODO: Optimize parsing to reduce the number of processed items
+        '''
+        Scrape ships from array ship_name.
+        return hash { name1 : (speed, course, (latitude, longitude) ), ...}
+        if error occured while procssing http connection or html parsing return empty hash.
+        if error occured while processing ship, than ship is not included in the result.
+        '''
+        url = r"http://www.marinetraffic.com/ais/datasheet.aspx?datasource=SHIPS_CURRENT&PORT_ID=883"
+        data = []
+        res = {}
+        try:
+            soup = BeautifulSoup(urllib2.urlopen(url).read())
+            raw_data = soup.find_all("a", class_="data")
+            for row in raw_data:
+                if row.text in ship_names:
+                    data.append( (row.text.encode('ascii','ignore'), row.find_parent("tr").find_all("td") ) )
+        except (AttributeError, urllib2.URLError):
+            data = None
+        if data != None:
+            for row in data:
+                coord = self._get_data(row[1])
+                if coord != None:
+                    res[row[0]] = coord
+        return res
+
+    def _get_search_name(self, ship_name):
+        '''
+        Format ship name for the search.
+        return string
+        '''
+        return '+'.join( ship_name.split(' ') )
+
+    def _get_data(self, row):
+        '''
+        Get data from raw data row.
+        row - data from bs4.
+        return ( speed, course, (latitude, longitude) )
+        if error occured return none
+        '''
+        try:
+            speed = float(row[3].text)
+            course = float(row[4].text)
+            raw_position = row[9].find("a")["href"]
             pattern = re.compile(r"centerx=([0-9\.]+)&centery=([0-9\.]+)")
             m = pattern.search(raw_position)
             longitude = float(m.group(1))
             latitude = float(m.group(2))
             res = ( speed, course, (latitude, longitude) )
-        except (AttributeError, urllib2.URLError):
+        except (AttributeError):
             res = None
         finally:
             return res
