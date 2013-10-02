@@ -39,12 +39,6 @@ class Coordinates:
         and from the point of "self" with angle "course"
         '''
         #phi = cours to radian Decart angle
-        #Warning Kostul'
-        #if (course <= 90):
-        #    phi = 90 - course
-        #else:
-        #    phi = 450 - course
-        #print phi, course
         phi = (450 - course) % 360 #grad
         #print phi
         phi = pi * phi / 180 #rad
@@ -54,13 +48,4 @@ class Coordinates:
         scalar = A * B / ( A.length() * B.length() )
         #print scalar
 
-        return acos(scalar) / pi * 180 #round acos(scalar)#, 
-
-#class Angle:
-#  '''
-#  Angle class.
-#  '''
-#  def __init__(self, fst, scd):
-#    self.fst = fst
-#    self.scd = scd  
-#  
+        return acos(scalar) / pi * 180 #round acos(scalar)

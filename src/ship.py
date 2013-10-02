@@ -18,9 +18,7 @@ class Ship:
         self.lastpos = []
         self.route = ""
 
-    def update_from_ais(self):
-        scrapper = Scrapper()
-        data = scrapper.scrape_ship(self.name)
+    def update(self, data):
         if data:
             if self.coordinates:
                 self.lastpos.append(self.coordinates)
@@ -34,8 +32,18 @@ class Ship:
         else:
             self.status = ship_status.OFLINE
 
+    def update_from_ais(self):
+        scrapper = Scrapper()
+        data = scrapper.scrape_ship(self.name)
+        self.update(data)
+
     def __str__(self):
-        return "name: {0}; speed: {1}; course: {2}; coordinates: {3}; route: {4};".format(self.name, self.speed, self.course, self.coordinates, self.route)
+        if self.status == ship_status.ONLINE:
+            res = "name: {0}; speed: {1}; course: {2}; coordinates: {3}; route: {4};".format(self.name, self.speed, self.course, self.coordinates, self.route)
+        else:
+            res = "name: {0} Not Found".format(self.name)
+        return res
+
 
     def ais_status(self):
         return ship_status.reverse_mapping[self.status]

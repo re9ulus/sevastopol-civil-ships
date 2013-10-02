@@ -5,6 +5,8 @@ from src.area import Area
 from src.kmlparser import KmlParser
 from src.route import Route
 from src.pier import Pier
+from src.scrapper import Scrapper 
+import time
 
 Kml = KmlParser()
 
@@ -16,12 +18,15 @@ routes = [Route(Kml.parse("Bay\\City-Nord.kml")), Route(Kml.parse("Bay\\Art-Nord
 #for i in range (360/5):
 #	print 5 * i, start.angle(5 * i, dest), (360 + 90 - 5 * i)*pi/180
 
-caters = ["WEST", "ORION",
- "G. OVCHINNIKOV", "ZUYD", "PERSEY", "OST", "URAN",
- "MOLODIZGNIY", "SATURN", "MERKURIY", "ADMIRAL LAZAREV",
- "ADMIRAL ISTOMIN", "V ADMIRAL KLOKACHEV", "NORD"]
+caters = ["WEST", "ORION", "G. OVCHINNIKOV", "ZUYD",
+ "PERSEY", "OST", "URAN", "MOLODIZGNIY", "SATURN", "MERKURIY",
+ "ADMIRAL LAZAREV", "ADMIRAL ISTOMIN", "V ADMIRAL KLOKACHEV",
+ "NORD"]
 
 #print caters
+
+scr = Scrapper()
+#scr = scr.scrape_all_ships(scr)
 
 Caters = []
 for c in caters:
@@ -40,24 +45,52 @@ routes[2].piers = [artbay, raduxa]
 #print grafskaya
 #print nordside
 
+
+timer = 15
+for t in range(timer):
+	data = scr.scrape_all_ships(caters)
+	for cater in Caters :
+		cater.update(data[cater.name])
+		if (cater.ais_status() == "ONLINE") :
+			counter = []
+			for route in routes:
+				counter.append(0)
+				if (route.bay.is_inside(cater.coordinates)):
+					counter[-1] += 1				
+				for pos in cater.lastpos :
+					if (route.bay.is_inside(pos)):
+						counter[-1] += 1
+			maxpos = max(counter)
+			if maxpos :
+				cater.route = counter.index(maxpos)
+			else :
+				cater.route = -1#"Outsider"
+	print "I am still work {0} minute remain".format(5 * (timer-t) )
+	time.sleep (5 * 60) #5 min delay
+
+data = scr.scrape_all_ships(caters)
 for cater in Caters:
-	cater.update_from_ais()
+	cater.update(data[cater.name])
+	#print cater
 	if (cater.ais_status() == "ONLINE") :
-		for route in routes:
-			if (route.bay.is_inside(cater.coordinates)) :
-				if (cater.speed < 0.1):
-					for pier in route.piers:
-						if (pier.area.is_inside(cater.coordinates)):
-							print "name: ", cater.name, "stay", pier.name
-				else:
-					name = ""
-					angle = 999
-					for pier in route.piers:
-						x = cater.angle(pier.mark)
-						if (x < angle):
-							angle = x
-							name = pier.name
-					print "name: ", cater.name, "route to", name #,cater.course
+		#for route in routes:
+		if (cater.route == -1):
+			pass
+		route = routes[cater.route]
+		#if (route.bay.is_inside(cater.coordinates)) :
+		if (cater.speed < 0.25):
+			for pier in route.piers:
+				if (pier.area.is_inside(cater.coordinates)):
+					print "name: ", cater.name, "; ", route, "; stay:", pier.name 
+		else:
+			name = ""
+			angle = 999
+			for pier in route.piers:
+				x = cater.angle(pier.mark)
+				if (x < angle):
+					angle = x
+					name = pier.name
+			print "name: ", cater.name,"; ", route, "; route to", name #,cater.course
 			#else:
 			#	print "name: ", cater.name, " ! Outsider !"
 	#else:
