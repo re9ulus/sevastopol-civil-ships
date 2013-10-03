@@ -1,5 +1,7 @@
 from area import Area
 from pier import Pier
+from ship import Ship
+from magic_numbers import MN
 
 class Route:
     '''
@@ -20,3 +22,45 @@ class Route:
 
     def __str__(self):
         return "route: {0};".format(self.name)
+
+    def verification(self, ship) :
+        '''
+        Checks Is the ship on the route
+        '''
+        if not self.bay.is_inside(ship.coordinates):
+            return 0
+        else:
+            count = 1
+
+        if (ship.speed < MN.STOP):
+            for pier in self.piers:
+                if pier.area.is_inside(ship.coordinates):
+                    return MN.TRUEPOS
+
+        for point in ship.lastpos:
+            count += self.bay.is_inside(point)
+
+        return count
+
+    def destination(self, ship) :
+        '''
+        Returns pier destination route
+        '''
+        if not self.bay.is_inside(ship.coordinates):
+            return None
+
+        if (ship.speed < MN.STOP):
+            for pier in self.piers:
+                if pier.area.is_inside(ship.coordinates):
+                    return pier
+
+        angle = MN.MAX
+        res = None
+
+        for pier in self.piers:
+            foo = ship.angle(pier.mark)
+            if foo < angle:
+                angle = foo
+                res = pier
+
+        return res

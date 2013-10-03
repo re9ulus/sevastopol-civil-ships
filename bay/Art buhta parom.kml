@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
 <Document>
-	<name>Nord-pier.kml</name>
-	<Style id="s_ylw-pushpin_hl20">
+	<name>Art buhta parom.kml</name>
+	<Style id="sh_ylw-pushpin">
 		<IconStyle>
 			<scale>1.3</scale>
 			<Icon>
@@ -11,20 +11,10 @@
 			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
 		</IconStyle>
 		<LineStyle>
-			<color>ff0000ff</color>
+			<color>ff00ff00</color>
 		</LineStyle>
 	</Style>
-	<StyleMap id="m_ylw-pushpin">
-		<Pair>
-			<key>normal</key>
-			<styleUrl>#s_ylw-pushpin</styleUrl>
-		</Pair>
-		<Pair>
-			<key>highlight</key>
-			<styleUrl>#s_ylw-pushpin_hl20</styleUrl>
-		</Pair>
-	</StyleMap>
-	<Style id="s_ylw-pushpin">
+	<Style id="sn_ylw-pushpin">
 		<IconStyle>
 			<scale>1.1</scale>
 			<Icon>
@@ -33,26 +23,36 @@
 			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
 		</IconStyle>
 		<LineStyle>
-			<color>ff0000ff</color>
+			<color>ff00ff00</color>
 		</LineStyle>
 	</Style>
+	<StyleMap id="msn_ylw-pushpin">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin</styleUrl>
+		</Pair>
+	</StyleMap>
 	<Placemark>
-		<name>Северная</name>
+		<name>Арт бухта паром</name>
 		<open>1</open>
 		<LookAt>
-			<longitude>33.535759</longitude>
-			<latitude>44.626327</latitude>
+			<longitude>33.518858</longitude>
+			<latitude>44.61311</latitude>
 			<altitude>0</altitude>
 			<heading>0</heading>
 			<tilt>0</tilt>
-			<range>500</range>
+			<range>300</range>
 			<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
 		</LookAt>
-		<styleUrl>#m_ylw-pushpin</styleUrl>
+		<styleUrl>#msn_ylw-pushpin</styleUrl>
 		<LineString>
 			<tessellate>1</tessellate>
 			<coordinates>
-				33.53532875132309,44.62654000693782,0 33.53623393221332,44.62618530063451,0 33.53544102953564,44.62537241061542,0 33.53479597345501,44.62561352013749,0 33.53532875132309,44.62654000693782,0 
+				33.51890122387751,44.61409771417932,0 33.51901800038457,44.61419461208305,0 33.51921290598291,44.61406973565808,0 33.51922975838581,44.61404609156869,0 33.51920159414065,44.61399479120338,0 33.51904589690794,44.61385651698006,0 33.51891873084674,44.6137273954934,0 33.51881216850742,44.61374348963695,0 33.51862562811535,44.61383417315219,0 33.51869892536574,44.61392620855101,0 33.51890122387751,44.61409771417932,0 
 			</coordinates>
 		</LineString>
 	</Placemark>

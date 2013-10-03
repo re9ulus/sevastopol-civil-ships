@@ -23,6 +23,12 @@ class Coordinates:
     def __lt__ (self, point):
         return (self.latitude < point.latitude) or ( (self.latitude == point.latitude) and (self.longitude < point.longitude) ) 
 
+    def __eq__ (self, point):
+        return (self.latitude == point.latitude) and (self.longitude == point.longitude)
+
+    def __ne__ (self, point):
+        return not (self == point)
+
     def length(self):
         '''
         Определяет длину вектора заданного координатами

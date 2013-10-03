@@ -1,6 +1,7 @@
 from coordinates import Coordinates
 from scrapper import Scrapper
 from enum import Enum
+from magic_numbers import MN
 
 ship_status = Enum("ONLINE", "OFLINE")
 
@@ -16,14 +17,14 @@ class Ship:
         self.status = ship_status.OFLINE
         
         self.lastpos = []
-        self.route = ""
+        self.route = None
 
     def update(self, data):
         if data:
-            if self.coordinates:
+            if (self.coordinates) and (self.speed > MN.STOP) :
                 self.lastpos.append(self.coordinates)
-            if len(self.lastpos)>10:
-                self.lastpos = self.lastpos[-10:]
+            if len(self.lastpos)>MN.LASTPOSLEN:
+                self.lastpos = self.lastpos[-MN.LASTPOSLEN:]
 
             self.speed = data[0]
             self.course = data[1]

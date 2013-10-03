@@ -6,17 +6,17 @@ from src.kmlparser import KmlParser
 from src.route import Route
 from src.pier import Pier
 from src.scrapper import Scrapper 
+from src.magic_numbers import MN
+
 import time
 
 Kml = KmlParser()
 
-routes = [Route(Kml.parse("Bay\\City-Nord.kml")), Route(Kml.parse("Bay\\Art-Nord.kml")), Route(Kml.parse("Bay\\Art-Rad.kml")) ]
-
-#start = Coordinates(0,0)
-#dest = Coordinates(0,10)
-
-#for i in range (360/5):
-#	print 5 * i, start.angle(5 * i, dest), (360 + 90 - 5 * i)*pi/180
+routes = [
+Route(Kml.parse("Bay\\Gorod - Severnaja.kml")),
+Route(Kml.parse("Bay\\Artbuhta - Severnaja.kml")),
+Route(Kml.parse("Bay\\Artbuhta - Radiogorka.kml"))
+]
 
 caters = ["WEST", "ORION", "G. OVCHINNIKOV", "ZUYD",
  "PERSEY", "OST", "URAN", "MOLODIZGNIY", "SATURN", "MERKURIY",
@@ -31,67 +31,60 @@ scr = Scrapper()
 Caters = []
 for c in caters:
 	Caters.append(Ship(c))
-#	print Caters[-1].name
 
-grafskaya = Pier(Kml.parse_pier("Bay\\Grafskaya-pier.kml"));
-nordside = Pier(Kml.parse_pier("Bay\\Nord-pier.kml"));
-artbay = Pier(Kml.parse_pier("Bay\\ArtBay-pier.kml"));
-raduxa = Pier(Kml.parse_pier("Bay\\RadBay-pier.kml"));
+A1 = Pier(Kml.parse_pier("Bay\\Grafskaja pristan.kml"));
+A2 = Pier(Kml.parse_pier("Bay\\Severnaja kater.kml"));
+B1 = Pier(Kml.parse_pier("Bay\\Art buhta parom.kml"));
+B2 = Pier(Kml.parse_pier("Bay\\Severnaja parom.kml"));
+C1 = Pier(Kml.parse_pier("Bay\\Art buhta kater.kml"));
+C2 = Pier(Kml.parse_pier("Bay\\Radiogorka.kml"));
 
-routes[0].piers = [grafskaya, nordside]
-routes[1].piers = [artbay, nordside]
-routes[2].piers = [artbay, raduxa]
+routes[0].piers = [A1, A2]
+routes[1].piers = [B1, B2]
+routes[2].piers = [C1, C2]
 
 #print grafskaya
 #print nordside
 
+data = scr.scrape_all_ships(caters)
 
-timer = 15
-for t in range(timer):
-	data = scr.scrape_all_ships(caters)
-	for cater in Caters :
-		cater.update(data[cater.name])
+def printpos():
+	for cater in Caters:
+		if (cater.ais_status() == "ONLINE") and (cater.route != -1) :
+			route = routes[cater.route]
+			if (cater.speed < MN.STOP):
+				print cater.name, ": stay  at :", route.destination(cater).name
+			else:
+				print cater.name, ": route to :", route.destination(cater).name
+
+def whatroute():
+	for cater in Caters:
 		if (cater.ais_status() == "ONLINE") :
 			counter = []
 			for route in routes:
-				counter.append(0)
-				if (route.bay.is_inside(cater.coordinates)):
-					counter[-1] += 1				
-				for pos in cater.lastpos :
-					if (route.bay.is_inside(pos)):
-						counter[-1] += 1
+				counter.append(route.verification(cater))
 			maxpos = max(counter)
 			if maxpos :
 				cater.route = counter.index(maxpos)
 			else :
-				cater.route = -1#"Outsider"
-	print "I am still work {0} minute remain".format(5 * (timer-t) )
-	time.sleep (5 * 60) #5 min delay
+				cater.route = -1
 
-data = scr.scrape_all_ships(caters)
-for cater in Caters:
-	cater.update(data[cater.name])
-	#print cater
-	if (cater.ais_status() == "ONLINE") :
-		#for route in routes:
-		if (cater.route == -1):
-			pass
-		route = routes[cater.route]
-		#if (route.bay.is_inside(cater.coordinates)) :
-		if (cater.speed < 0.25):
-			for pier in route.piers:
-				if (pier.area.is_inside(cater.coordinates)):
-					print "name: ", cater.name, "; ", route, "; stay:", pier.name 
+def upd():
+	data = scr.scrape_all_ships(caters)
+	for cater in Caters :
+		if cater.name in data:
+			cater.update(data[cater.name])
 		else:
-			name = ""
-			angle = 999
-			for pier in route.piers:
-				x = cater.angle(pier.mark)
-				if (x < angle):
-					angle = x
-					name = pier.name
-			print "name: ", cater.name,"; ", route, "; route to", name #,cater.course
-			#else:
-			#	print "name: ", cater.name, " ! Outsider !"
-	#else:
-	#	print "name: ", cater.name, " ! Not FOUND !"
+			cater.update(None)
+
+print "----------------------------------"
+timer = 35
+for t in range(timer):
+	upd()
+	whatroute()
+	printpos()
+
+	print "----------------------------------"
+	print "I am still work {0} minute remain".format(5 * (timer-t) )
+	print "----------------------------------"
+	time.sleep (2 * 60) #2 min delay

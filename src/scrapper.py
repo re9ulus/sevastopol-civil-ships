@@ -40,9 +40,6 @@ class Scrapper:
         url = r"http://www.marinetraffic.com/ais/datasheet.aspx?datasource=SHIPS_CURRENT&PORT_ID=883"
         data = []
         res = {}
-
-        for name in ship_names:
-            res[name] = None
         
         try:
             soup = BeautifulSoup(urllib2.urlopen(url).read())
