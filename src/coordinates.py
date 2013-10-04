@@ -33,7 +33,7 @@ class Coordinates:
         '''
         Определяет длину вектора заданного координатами
         '''
-        return sqrt(self.latitude*self.latitude + self.longitude*self.longitude)
+        return sqrt(self.latitude * self.latitude + self.longitude * self.longitude)
 
     def __str__(self):
         return "latitude: {0}; longitude: {1}".format(self.latitude, self.longitude) 
