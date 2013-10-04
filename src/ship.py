@@ -22,26 +22,17 @@ class Ship:
         self.status = ship_status.OFFLINE
         
         self.lastpos = []
-<<<<<<< HEAD
         self.lastpierindex = None
-=======
->>>>>>> 43a22185c5f478b4129b368fea5c994dad70685c
         self.route = None
 
     def update(self, data):
         if data:
             if (self.coordinates) and (self.speed > MN.STOP) :
-<<<<<<< HEAD
                 if not (self.lastpos.count(self.coordinates)) :
                     self.lastpos.append(self.coordinates)
 
             if len(self.lastpos)>MN.LASTPOSLEN:
                 self.lastpos.pop(0)# = self.lastpos[-MN.LASTPOSLEN:]
-=======
-                self.lastpos.append(self.coordinates)
-            if len(self.lastpos)>MN.LASTPOSLEN:
-                self.lastpos = self.lastpos[-MN.LASTPOSLEN:]
->>>>>>> 43a22185c5f478b4129b368fea5c994dad70685c
 
             self.speed = data[0]
             self.course = data[1]
