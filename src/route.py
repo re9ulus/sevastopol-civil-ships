@@ -28,7 +28,7 @@ class Route:
         Checks Is the ship on the route
         '''
         if not self.bay.is_inside(ship.coordinates):
-            return 0
+            return -1
         else:
             count = 1
 

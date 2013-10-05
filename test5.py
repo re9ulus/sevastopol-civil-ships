@@ -57,22 +57,33 @@ E1 = D1
 E2 = D2
 E3 = Pier(Kml.parse_pier("Bay\\Avlita.kml"));
 
+DeadEnd = Pier(Kml.parse_pier("Bay\\Dead end.kml"));
+
 routes[0].piers = [A1, A2]
 routes[1].piers = [B1, B2]
 routes[2].piers = [C1, C2]
 routes[3].piers = [D1, D2, D3, D4, D5, D6, D4, D3, D2]
-routes[4].piers = [E1, E2, E3]
+routes[4].piers = [E1, E2, E3, E2]
 
 data = scr.scrape_all_ships(caters)
 
 def printpos():
 	for cater in Caters:
-		if (cater.ais_status() == "ONLINE") and (cater.route != -1) :
-			route = routes[cater.route]
-			if (cater.speed < MN.STOP):
-				print Fore.RED , cater.nick, ": STAY AT :", route.destination(cater).name, ": ROUTE ON :", routes[cater.route].name
-			else:
-				print Fore.GREEN , cater.nick, ": ROUTE TO :", route.destination(cater).name, ":  ROUTE ON  :", routes[cater.route].name
+		try:
+			if (cater.deadend(DeadEnd)):
+				print Fore.RED, Style.DIM, cater
+			if (cater.ais_status() == "ONLINE") and (cater.route != None) :
+				route = routes[cater.route]
+				if (cater.speed < MN.STOP):
+					print Fore.CYAN, Style.BRIGHT, cater.nick, ": STAY AT :", route.destination(cater).name, ": ROUTE ON :", routes[cater.route].name
+				else:
+					print Fore.GREEN, Style.BRIGHT, cater.nick, ": ROUTE TO :", route.destination(cater).name, ":  ROUTE ON  :", routes[cater.route].name
+			if (cater.ais_status() == "OFFLINE") :
+				print Fore.BLACK, Style.BRIGHT, cater
+									
+		except:
+			print Fore.RED + Back.YELLOW, cater, route, Fore.RESET + Back.RESET + Style.RESET_ALL 
+
 #	for cater in Caters:
 #		if (cater.ais_status() == "OFFLINE") :
 #			print Fore.RED + Back.WHITE, "NOT FOUND : ", cater.nick
@@ -80,25 +91,28 @@ def printpos():
 #	for cater in Caters:
 #		if (cater.ais_status() == "ONLINE") and (cater.route == -1) :
 #			print Fore.RED + Back.WHITE, "OUTSIDER : ", cater.nick
-	print Fore.YELLOW, "------------------------------------------------------------------------------", Fore.RESET + Back.RESET + Style.RESET_ALL 
+	print Fore.YELLOW, Style.BRIGHT, "------------------------------------------------------------------------------", Fore.RESET + Back.RESET + Style.RESET_ALL 
 
 
 def whatroute():
 	for cater in Caters:
 		if (cater.ais_status() == "ONLINE") :
+			if (cater.deadend(DeadEnd)):
+				continue
+
 			counter = []
 			for route in routes:
 				counter.append(route.verification(cater))
 			maxpos = max(counter)
-			if maxpos and (counter.count(maxpos) == 1):
+			if (maxpos > 0) and (counter.count(maxpos) == 1):
 				cater.route = counter.index(maxpos)
-			elif maxpos:
+			elif (maxpos > 0):
 				for i in range(len(counter)) :
 					if cater.route == i:
 						return
 				cater.route = counter.index(maxpos)
 			else:
-				cater.route = -1
+				cater.route = None
 
 def upd(count):
 	for i in range(count):
@@ -111,6 +125,6 @@ def upd(count):
 				cater.update(None)
 
 while True:
-	upd(3)
-	whatroute()
 	printpos()
+	upd(5)
+	whatroute()
