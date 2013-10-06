@@ -1,5 +1,5 @@
 class MN:
-    STOP = 0.25 #minimal cignificant speed khot
+    STOP = 0.55 #minimal cignificant speed khot
 
     LASTPOSLEN = 10 #length of lastpos
     

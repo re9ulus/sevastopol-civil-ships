@@ -78,6 +78,18 @@ class Ship:
     def viewangle(self, point):
         return self.angle(point) < MN.VIEWANGLE
 
+    def collinear(self, point):
+        '''
+        Easy use for Coordinates.collinear()
+        '''
+        return self.coordinates.collinear(self.course, point)
+
+    def length(self, point):
+        '''
+        Easy use for Coordinates.length()
+        '''
+        return (self.coordinates - point).length()
+
     def deadend(self, zone):
         if self.status == ship_status.OFFLINE:
             return False

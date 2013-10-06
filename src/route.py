@@ -28,7 +28,7 @@ class Route:
         Checks Is the ship on the route
         '''
         if not self.bay.is_inside(ship.coordinates):
-            return -1
+            return None
         else:
             count = 1
 
@@ -42,6 +42,12 @@ class Route:
 
         return count
 
+    def next(self, index, count = 1):
+        return (index + count) % len(self.piers)
+
+    def prev(self, index, count = 1):
+        return (len(self.piers) + index - count) % len(self.piers)
+
     def destination(self, ship) :
         '''
         Returns pier destination route
@@ -50,29 +56,39 @@ class Route:
             return None
 
         if (ship.speed < MN.STOP):
-
             x = [0, ship.lastpierindex] [ship.lastpierindex != None]
             for i in range(len(self.piers)):
-                pier = self.piers[(x + i) % len(self.piers)]
+                pier = self.piers[self.next(x,i)]
                 if pier.area.is_inside(ship.coordinates):
-                    ship.lastpierindex = (x + i) % len(self.piers)
+                    ship.lastpierindex = self.next(x,i)
                     return pier
 
         if (ship.lastpierindex != None):
-            if ship.viewangle(self.piers[(ship.lastpierindex + 1) % len(self.piers)].mark):
-                return self.piers[(ship.lastpierindex + 1) % len(self.piers)]
-            elif ship.viewangle(self.piers[(len(self.piers) + ship.lastpierindex - 1) % len(self.piers)].mark):
-                return self.piers[ (len(self.piers) + ship.lastpierindex - 1) % len(self.piers)]
+            if ship.viewangle(self.piers[self.next(ship.lastpierindex)].mark):
+                return self.piers[self.next(ship.lastpierindex)]
+            elif ship.viewangle(self.piers[self.prev(ship.lastpierindex)].mark):
+                return self.piers[ self.prev(ship.lastpierindex) ]
             else:
-                return self.piers[(ship.lastpierindex + 1) % len(self.piers)]
 
-        angle = MN.MAX
+                if (ship.collinear(self.piers[self.next(ship.lastpierindex)].mark)):
+                    ship.lastpierindex = self.next(ship.lastpierindex)
+                    return self.destination(ship)
+                elif (ship.collinear(self.piers[self.prev(ship.lastpierindex)].mark)):
+                    ship.lastpierindex = self.prev(ship.lastpierindex)
+                    return self.destination(ship)
+                #return self.piers[(ship.lastpierindex + 1) % len(self.piers)]
+
+
+        dest = MN.MAX
         res = None
 
         for pier in self.piers:
             foo = ship.angle(pier.mark)
-            if foo < angle:
-                angle = foo
-                res = pier
+            #print foo, pier
+            if ship.viewangle(pier.mark) :
+                foo = ship.length(pier.mark)
+                if (foo < dest):
+                    dest = foo
+                    res = pier
 
         return res

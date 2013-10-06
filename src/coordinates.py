@@ -38,6 +38,11 @@ class Coordinates:
     def __str__(self):
         return "latitude: {0}; longitude: {1}".format(self.latitude, self.longitude) 
 
+# -------------------------------------------------
+# NED DEBUG
+# Latitude == Y
+# Longitude == X
+
     def angle(self, course, dest):
         '''
         Calculates the angle between the vectors
@@ -49,9 +54,25 @@ class Coordinates:
         #print phi
         phi = pi * phi / 180 #rad
 
-        A = Coordinates(cos(phi), sin(phi))
+        A = Coordinates(sin(phi), cos(phi))
         B = dest - self
-        scalar = A * B / ( A.length() * B.length() )
-        #print scalar
 
-        return acos(scalar) / pi * 180 #round acos(scalar)
+        scalar = A * B / ( A.length() * B.length() )
+        
+        co = acos(scalar) / pi * 180
+        #print co
+        return co #round acos(scalar)
+
+    def collinear(self, course, start):
+        '''
+        Return bool is a vectors are collinear
+        '''
+        phi = (450 - course) % 360 #grad
+        phi = pi * phi / 180 #rad
+
+        A = Coordinates(sin(phi), cos(phi))
+        B = self - start
+        scalar = A * B / ( A.length() * B.length() )
+
+        return scalar > 0
+# ---------------------------------------------------
