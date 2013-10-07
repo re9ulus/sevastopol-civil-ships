@@ -4,6 +4,7 @@ from enum import Enum
 from magic_numbers import MN
 
 ship_status = Enum("ONLINE", "OFFLINE", "INDEADEND")
+message = Enum("HELLO", "GOODBYE", "PASS", "STAND", "UNDERWAY")
 
 class Ship:
     '''
@@ -36,6 +37,49 @@ class Ship:
         
         #self.status = ship_status.OFFLINE
 
+    def msg(self):
+        res = message.PASS
+        #print self
+        if (self.status == ship_status.ONLINE) :
+            if (self.speed < MN.STOP):
+                res = message.STAND
+            else :
+                res = message.UNDERWAY
+
+        return message.reverse_mapping[res]
+
+    def msgupdate(self, data, zone):
+        res = message.PASS
+
+        A = self.status
+
+        self.update(data)
+        self.deadend(zone)
+
+        B = self.status
+
+        if (A == ship_status.ONLINE) :
+            if (B == ship_status.ONLINE) :
+                res = message.PASS
+            elif (B == ship_status.OFFLINE) or (B == ship_status.INDEADEND) :
+                res = message.GOODBYE
+
+        elif (A == ship_status.OFFLINE) :
+            if (B == ship_status.ONLINE) :
+                res = message.HELLO
+            elif (B == ship_status.OFFLINE) or (B == ship_status.INDEADEND) :
+                res = message.PASS
+
+        elif (A == ship_status.INDEADEND) :
+            if (B == ship_status.ONLINE) :
+                res = message.HELLO
+            elif (B == ship_status.OFFLINE) :
+                res = message.GOODBYE
+            elif (B == ship_status.INDEADEND) :
+                res = message.PASS
+
+        return message.reverse_mapping[res]
+
     def update(self, data):
         if data:
             if (self.coordinates) and (self.speed > MN.STOP) :
@@ -56,7 +100,7 @@ class Ship:
     def update_from_ais(self):
         scrapper = Scrapper()
         data = scrapper.scrape_ship(self.name)
-        self.update(data)
+        return self.update(data)
 
     def __str__(self):
         if self.status == ship_status.ONLINE:

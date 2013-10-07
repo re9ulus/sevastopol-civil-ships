@@ -1,4 +1,4 @@
-from area import Area
+﻿from area import Area
 from pier import Pier
 from ship import Ship
 from magic_numbers import MN
@@ -80,7 +80,7 @@ class Route:
 
 
         dest = MN.MAX
-        res = None
+        res = self.piers[0]#None
 
         for pier in self.piers:
             foo = ship.angle(pier.mark)

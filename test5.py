@@ -2,7 +2,7 @@ from src.coordinates import Coordinates
 #from math import *
 from src.ship import Ship
 from src.area import Area
-from src.kmlparser import KmlParser
+from src.xmlparser import XmlParser
 from src.route import Route
 from src.pier import Pier
 from src.scrapper import Scrapper 
@@ -13,16 +13,17 @@ from colorama import Fore, Back, Style
 init()
 
 import time
-from time import gmtime, strftime
+from time import strftime
 
-Kml = KmlParser()
+Xml = XmlParser()
+#print Xml.get_msg("HELLO")
 
 routes = [
-Route(Kml.parse("Bay\\Gorod - Severnaja.kml")),
-Route(Kml.parse("Bay\\Artbuhta - Severnaja.kml")),
-Route(Kml.parse("Bay\\Artbuhta - Radiogorka.kml")),
-Route(Kml.parse("Bay\\Gorod - Gollandija - Inkerman.kml")),
-Route(Kml.parse("Bay\\Gorod - Avlita.kml"))
+Route(Xml.parse("Bay\\Gorod - Severnaja.kml")),
+Route(Xml.parse("Bay\\Artbuhta - Severnaja.kml")),
+Route(Xml.parse("Bay\\Artbuhta - Radiogorka.kml")),
+Route(Xml.parse("Bay\\Gorod - Gollandija - Inkerman.kml")),
+Route(Xml.parse("Bay\\Gorod - Avlita.kml"))
 ]
 
 caters = []
@@ -37,27 +38,27 @@ for name in open("ship.list", "r").readlines():
 scr = Scrapper()
 #scr = scr.scrape_all_ships(scr)
 
-A1 = Pier(Kml.parse_pier("Bay\\Grafskaja pristan.kml"));
-A2 = Pier(Kml.parse_pier("Bay\\Severnaja kater.kml"));
+A1 = Pier(Xml.parse_pier("Bay\\Grafskaja pristan.kml"));
+A2 = Pier(Xml.parse_pier("Bay\\Severnaja kater.kml"));
 
-B1 = Pier(Kml.parse_pier("Bay\\Art buhta parom.kml"));
-B2 = Pier(Kml.parse_pier("Bay\\Severnaja parom.kml"));
+B1 = Pier(Xml.parse_pier("Bay\\Art buhta parom.kml"));
+B2 = Pier(Xml.parse_pier("Bay\\Severnaja parom.kml"));
 
-C1 = Pier(Kml.parse_pier("Bay\\Art buhta kater.kml"));
-C2 = Pier(Kml.parse_pier("Bay\\Radiogorka.kml"));
+C1 = Pier(Xml.parse_pier("Bay\\Art buhta kater.kml"));
+C2 = Pier(Xml.parse_pier("Bay\\Radiogorka.kml"));
 
-D1 = Pier(Kml.parse_pier("Bay\\Pirs u porta.kml"));
-D2 = Pier(Kml.parse_pier("Bay\\Apolonovka.kml"));
-D3 = Pier(Kml.parse_pier("Bay\\Gollandija.kml"));
-D4 = Pier(Kml.parse_pier("Bay\\Ugolnaja.kml"));
-D5 = Pier(Kml.parse_pier("Bay\\Inkerman - 1.kml"));
-D6 = Pier(Kml.parse_pier("Bay\\Inkerman - 2.kml"));
+D1 = Pier(Xml.parse_pier("Bay\\Pirs u porta.kml"));
+D2 = Pier(Xml.parse_pier("Bay\\Apolonovka.kml"));
+D3 = Pier(Xml.parse_pier("Bay\\Gollandija.kml"));
+D4 = Pier(Xml.parse_pier("Bay\\Ugolnaja.kml"));
+D5 = Pier(Xml.parse_pier("Bay\\Inkerman - 1.kml"));
+D6 = Pier(Xml.parse_pier("Bay\\Inkerman - 2.kml"));
 
 E1 = D1
 E2 = D2
-E3 = Pier(Kml.parse_pier("Bay\\Avlita.kml"));
+E3 = Pier(Xml.parse_pier("Bay\\Avlita.kml"));
 
-DeadEnd = Pier(Kml.parse_pier("Bay\\Dead end.kml"));
+DeadEnd = Pier(Xml.parse_pier("Bay\\Dead end.kml"));
 
 routes[0].piers = [A1, A2]
 routes[1].piers = [B1, B2]
@@ -65,10 +66,10 @@ routes[2].piers = [C1, C2]
 routes[3].piers = [D1, D2, D3, D4, D5, D6, D4, D3, D2]
 routes[4].piers = [E1, E2, E3, E2]
 
-data = scr.scrape_all_ships(caters)
+#data = scr.scrape_all_ships(caters)
 
 def printpos():
-	print time.strftime("%a, %d %b %Y, %H:%M", gmtime())
+	print time.strftime("%a, %d %b %Y, %H:%M:%S", time.localtime())
 	for cater in Caters:
 		try:
 			if (cater.deadend(DeadEnd)):
@@ -115,13 +116,14 @@ def whatroute():
 
 def upd(count):
 	for i in range(count):
-		time.sleep (90) #1.5 min delay
+		#time.sleep (90) #1.5 min delay
 		data = scr.scrape_all_ships(caters)
-		for cater in Caters :
-			if cater.name in data:
-				cater.update(data[cater.name])
-			else:
-				cater.update(None)
+		if data:
+			for cater in Caters :
+				if cater.name in data:
+					cater.update(data[cater.name])
+				else:
+					cater.update(None)
 
 while True:
 	printpos()

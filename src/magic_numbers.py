@@ -8,3 +8,5 @@ class MN:
     MAX = 100500 #some very large number
     
     VIEWANGLE = 60 #angle at which it is considered that the boat went to target
+
+    DELAY = 60 #time to sleep

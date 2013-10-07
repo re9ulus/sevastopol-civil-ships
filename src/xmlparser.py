@@ -1,10 +1,11 @@
-from xml.dom.minidom import *
+﻿from xml.dom.minidom import *
 from coordinates import Coordinates
 from area import Area
+from random import randint
 
-class KmlParser:
+class XmlParser:
     '''
-    KmlParser class.
+    XmlParser class.
     '''
     def __init__(self):
         pass
@@ -18,7 +19,7 @@ class KmlParser:
             placemark = parse(path).getElementsByTagName("Placemark")[0]        
             coordinates = placemark.getElementsByTagName("coordinates")[0].childNodes[0].nodeValue
             #Warning ENCODE CP 866 
-            name = placemark.getElementsByTagName("name")[0].childNodes[0].nodeValue.encode("CP866")
+            name = placemark.getElementsByTagName("name")[0].childNodes[0].nodeValue#.encode("CP866")
 
             polygon = []
             for coord in coordinates.split():
@@ -51,3 +52,15 @@ class KmlParser:
         finally:
             #print res
             return res
+
+    def getmsg(self, tagName, path = "message.xml"):
+        '''
+        Get message from xlm file by tag.
+        '''
+        try:
+            messages = parse(path).getElementsByTagName(tagName)[0].getElementsByTagName("msg")
+            index = randint(0, len(messages) - 1)
+            #print messages[index].childNodes[0].nodeValue
+            return messages[index].childNodes[0].nodeValue
+        except:
+           return None
