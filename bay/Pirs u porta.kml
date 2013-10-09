@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>Pirs u porta.kml</name>
+	<StyleMap id="msn_ylw-pushpin">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="sn_ylw-pushpin">
+		<IconStyle>
+			<color>ff00aaff</color>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<ListStyle>
+		</ListStyle>
+		<LineStyle>
+			<color>ff00ffff</color>
+		</LineStyle>
+	</Style>
+	<Style id="sh_ylw-pushpin">
+		<IconStyle>
+			<color>ff00aaff</color>
+			<scale>1.18182</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<ListStyle>
+		</ListStyle>
+		<LineStyle>
+			<color>ff00ffff</color>
+		</LineStyle>
+	</Style>
+	<Placemark>
+		<name>Пирс у порта</name>
+		<open>1</open>
+		<LookAt>
+			<longitude>33.526542</longitude>
+			<latitude>44.616539</latitude>
+			<altitude>0</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<range>300</range>
+			<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+		</LookAt>
+		<styleUrl>#msn_ylw-pushpin</styleUrl>
+		<LineString>
+			<tessellate>1</tessellate>
+			<coordinates>
+				33.52664341251454,44.61669958196448,0 33.52677539889678,44.6167145550442,0 33.52689710939434,44.61673615434447,0 33.52702860149303,44.61668540569646,0 33.52699249188453,44.61652092111272,0 33.52697273924589,44.61651179912434,0 33.5266546193217,44.61652645770515,0 33.52663826355072,44.61662076587805,0 33.52654672824451,44.61685722029438,0 33.52661670364976,44.61708663676208,0 33.52669230246656,44.61731760756423,0 33.52678686694018,44.61761567845543,0 33.52682858856285,44.61771716746379,0 33.52692892115319,44.61777291277979,0 33.52715305405731,44.61776388353498,0 33.52732202407238,44.61773272669518,0 33.52737078885686,44.61768319303455,0 33.52736766622567,44.61763867116581,0 33.52730327916396,44.61760429330561,0 33.52714644577756,44.61762245442473,0 33.52701694446251,44.61763546131878,0 33.5268320376106,44.6176684797,0 33.52679223002861,44.6175538656098,0 33.52658224827355,44.61686015017652,0 33.52664341251454,44.61669958196448,0 
+			</coordinates>
+		</LineString>
+	</Placemark>
+</Document>
+</kml>

@@ -14,3 +14,10 @@ class Twitter:
         Writes message into twitter stream.
         '''
         self.twitter.update_status(status=message)
+
+    def post(self, message):
+        '''
+        Writes message into console to test.
+        '''
+        #print message
+        self.post_tweet(message)
