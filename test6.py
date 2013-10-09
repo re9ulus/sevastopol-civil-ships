@@ -121,7 +121,7 @@ def sendmsg():
 			msg = cater.msg()
 			if (msg != "PASS") :
 				pier = route.destination(cater)
-				pier = ["Неизвестности", pier.name] [pier]
+				pier = ["Неизвестности", pier.name] [pier != None]
 				Tweet.post(Xml.getmsg(msg).format(cater.nick, pier, route.name))
 
 		upd()

@@ -66,6 +66,8 @@ class Ship:
 
         if self.printedpos and self.coordinates:
             self.alive = ((self.printedpos - self.coordinates).length() > MN.DELTA)
+        else:
+            self.alive = ((not self.printedpos) and (self.coordinates))
 
         #if aCoord and bCoord:
         #    print self.name, aCoord, bCoord, self.alive
