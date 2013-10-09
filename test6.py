@@ -4,6 +4,7 @@ from src import *
 import time
 from time import strftime
 from random import randint
+import sys
 #=============================================================
 Scrap = Scrapper()
 Xml = XmlParser()
@@ -119,7 +120,9 @@ def sendmsg():
 			route = routes[cater.route]
 			msg = cater.msg()
 			if (msg != "PASS") :
-				Tweet.post(Xml.getmsg(msg).format(cater.nick, route.destination(cater).name, routes[cater.route].name))
+				pier = route.destination(cater)
+				pier = ["Неизвестности", pier.name] [pier]
+				Tweet.post(Xml.getmsg(msg).format(cater.nick, pier, route.name))
 
 		upd()
 		whatroute()
@@ -135,9 +138,28 @@ def sleep():
 
 routes, DeadEnd, caters, Caters = start()
 
+#from src.coordinates import Coordinates
+#A = Coordinates(44.617080, 33.528040)
+#B = Coordinates(44.617467, 33.526974)
+#C = Coordinates(44.617290, 33.529030)
+
+#print A - B
+#print B - A
+#0.00113407451254
+
+#a=(A-B).length()
+#b=(B-C).length()
+
+#print a
+#print b
+#print b-a
 #for i in range(5):
 while True:
-	upd()
-	whatroute()
-	sendmsg()
-#	sleep()
+	try:
+		print strftime("%a, %d %b %Y %H:%M:%S", time.localtime())
+		upd()
+		whatroute()
+		sendmsg()
+		sleep()
+	except:
+		print "Error:", sys.exc_info()[0]

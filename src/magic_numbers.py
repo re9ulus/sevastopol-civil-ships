@@ -10,3 +10,5 @@ class MN:
     VIEWANGLE = 60 #angle at which it is considered that the boat went to target
 
     DELAY = 60 #time to sleep
+
+    DELTA = 0.0015 #distans to determinate next pier

@@ -66,6 +66,8 @@ class Route:
         if (ship.lastpierindex != None):
             if ship.viewangle(self.piers[self.next(ship.lastpierindex)].mark):
                 return self.piers[self.next(ship.lastpierindex)]
+            elif ((self.piers[ship.lastpierindex].mark - ship.coordinates).length() < MN.DELTA):
+                return self.piers[self.next(ship.lastpierindex)]
             elif ship.viewangle(self.piers[self.prev(ship.lastpierindex)].mark):
                 return self.piers[ self.prev(ship.lastpierindex) ]
             else:

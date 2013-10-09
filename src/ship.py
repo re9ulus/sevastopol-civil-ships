@@ -26,6 +26,9 @@ class Ship:
         self.lastpierindex = None
         self.route = None
 
+        self.alive = False
+        self.printedpos = None
+
     def reset(self):
         #self.coordinates = None
         #self.course = None
@@ -40,7 +43,8 @@ class Ship:
     def msg(self):
         res = message.PASS
         #print self
-        if (self.status == ship_status.ONLINE) :
+        if self.alive and (self.status == ship_status.ONLINE) :
+            self.printedpos = self.coordinates
             if (self.speed < MN.STOP):
                 res = message.STAND
             else :
@@ -52,11 +56,19 @@ class Ship:
         res = message.PASS
 
         A = self.status
+        #aCoord = self.coordinates
 
         self.update(data)
         self.deadend(zone)
 
         B = self.status
+        #bCoord = self.coordinates
+
+        if self.printedpos and self.coordinates:
+            self.alive = ((self.printedpos - self.coordinates).length() > MN.DELTA)
+
+        #if aCoord and bCoord:
+        #    print self.name, aCoord, bCoord, self.alive
 
         if (A == ship_status.ONLINE) :
             if (B == ship_status.ONLINE) :

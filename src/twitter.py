@@ -19,4 +19,5 @@ class Twitter:
         '''
         Writes message into console to test.
         '''
-        print message
+        #print message
+        self.post_tweet(message)
