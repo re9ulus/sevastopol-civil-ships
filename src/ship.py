@@ -153,7 +153,7 @@ class Ship:
             return False
 
         if (zone.area.is_inside(self.coordinates)):
-            if (self.speed < MN.STOP) or (self.viewangle(zone.mark)):
+            if (self.speed < MN.STOP) or (self.length(zone.mark) < MN.DEADEND) (self.viewangle(zone.mark)):
                 self.status = ship_status.INDEADEND
                 self.reset()
                 return True

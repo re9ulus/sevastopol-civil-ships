@@ -94,7 +94,7 @@ def whatroute():
 				cater.route = None
 				continue
 
-			if (cater.route != None) and (routes[cater.route] == maxpos):
+			if (cater.route == maxpos):
 				continue
 			
 			cater.route = counter.index(maxpos)

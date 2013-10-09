@@ -82,7 +82,7 @@ class Route:
 
 
         dest = MN.MAX
-        res = self.piers[0]#None
+        res = None#self.piers[0]#
 
         for pier in self.piers:
             foo = ship.angle(pier.mark)

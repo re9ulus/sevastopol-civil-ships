@@ -12,3 +12,5 @@ class MN:
     DELAY = 60 #time to sleep
 
     DELTA = 0.0015 #distans to determinate next pier
+
+    DEADEND = 0.0090 #distans to deadend place

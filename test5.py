@@ -125,7 +125,14 @@ def upd(count):
 				else:
 					cater.update(None)
 
-while True:
-	printpos()
-	upd(3)
-	whatroute()
+
+cater = Caters[0]
+
+cater.coordinates = Coordinates(44.603470, 33.531510)
+
+print cater.length(DeadEnd.mark)
+
+#while True:
+#	printpos()
+#	upd(3)
+#	whatroute()
