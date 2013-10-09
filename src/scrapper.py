@@ -69,7 +69,7 @@ class Scrapper:
     def _get_data(self, row):
         '''
         Get data from raw data row.
-        row - data from bs4.
+        row is <tr> element from website wraped with bs4.
         return ( speed, course, (latitude, longitude) )
         if error occured return none
         '''
