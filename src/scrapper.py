@@ -40,13 +40,17 @@ class Scrapper:
         url = r"http://www.marinetraffic.com/ais/datasheet.aspx?datasource=SHIPS_CURRENT&PORT_ID=883"
         data = []
         res = {}
+        
+        for name in ship_names:
+            res[name] = None
+
         try:
             soup = BeautifulSoup(urllib2.urlopen(url).read())
             raw_data = soup.find_all("a", class_="data")
             for row in raw_data:
                 if row.text in ship_names:
                     data.append( (row.text.encode('ascii','ignore'), row.find_parent("tr").find_all("td") ) )
-        except (AttributeError, urllib2.URLError):
+        except :#(AttributeError, urllib2.URLError):
             data = None
         if data != None:
             for row in data:

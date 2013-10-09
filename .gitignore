@@ -1,2 +1,3 @@
 *.pyc
 twitter_oauth_info.py
+colorama
